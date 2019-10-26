@@ -2,14 +2,15 @@ import os
 import xml.etree.ElementTree as elementTree
 import time
 user_name = 'zixuan'
+file_path = ''
 def get_ui_xml():
     file = os.popen("adb shell uiautomator dump --compressed /data/local/tmp/uidump.xml")
     file.close()
-    print(os.popen("adb pull /data/local/tmp/uidump.xml ~/Desktop").read())
+    print(os.popen("adb pull /data/local/tmp/uidump.xml "+file_path).read())
 
 
 def analysis_xml(number_of_layer):
-    file = open('/Users/'+user_name+'/Desktop/uidump.xml')
+    file = open(file_path+'uidump.xml')
     root = elementTree.parse(file).getroot()
     file.close()
     for i in range(number_of_layer):
