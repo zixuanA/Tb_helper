@@ -64,7 +64,7 @@ while flag:
 
                 # print(get_point(i[2].attrib['bounds'])[0],get_point(i[2].attrib['bounds'])[1])
                 tap(get_point(i[2].attrib['bounds'])[0] + 100, get_point(i[2].attrib['bounds'])[1] + 40)
-                if i[2].attrib['text'][1] == '进':
+                if i[2].attrib['text'][1] == '浏':
                     time.sleep(5)
                     os.popen('adb shell input swipe 300 600 300 100')
                     time.sleep(5)
