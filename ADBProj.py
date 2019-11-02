@@ -46,25 +46,27 @@ def get_point(position_string):
 
 get_ui_xml()
 fla = analysis_xml(11).findall('node')[2][1][0][5].attrib['bounds']
-check = True
+# check = True
 point_x = get_point(fla)[0]
 point_y = get_point(fla)[1]
 tap(point_x + 10, point_y + 10)
 print(point_x, point_y)
 flag = True
 while flag:
+    time.sleep(1)
     get_ui_xml()
     int_flag = 0
     for i in analysis_xml(11)[5][1][1][0][13]:
 
         int_flag += 1
+        print("raw:"+i[2].attrib['text'] + str(len(analysis_xml(11)[5][1][1][0][13])) + "   " + str(int_flag))
         if i[2].attrib['text'][1] == '浏' or i[2].attrib['text'][1] == '进':
 
-            if i[2].attrib['text'] != '已完成':
-
-                # print(get_point(i[2].attrib['bounds'])[0],get_point(i[2].attrib['bounds'])[1])
+            if i[2].attrib['text'][0] != '已' and '首页' not in i[1][0].attrib['text']:
+                time.sleep(2)
+                print("tap:"+i[2].attrib['text'])
                 tap(get_point(i[2].attrib['bounds'])[0] + 100, get_point(i[2].attrib['bounds'])[1] + 40)
-                if i[2].attrib['text'][1] == '浏':
+                if '进店'in i[1][1].attrib['text']:
                     time.sleep(5)
                     os.popen('adb shell input swipe 300 600 300 100')
                     time.sleep(5)
@@ -77,10 +79,11 @@ while flag:
                     os.popen('adb shell input swipe 300 600 300 100')
                     time.sleep(10)
                 os.popen('adb shell input keyevent 4')
-                break
+                if analysis_xml(11)[5][1][1][0][13] != int_flag and i[2].attrib['text'][0] == '已':
+                    break
 
         # print(str(len(analysis_xml(11)[5][1][1][0][13] - 1))+" "+str(int_flag))
-        print(i[2].attrib['text'][1]  +str(len(analysis_xml(11)[5][1][1][0][13]))+"   "+str(int_flag))
-        if len(analysis_xml(11)[5][1][1][0][13]) == int_flag and i[2].attrib['text'][1] == '完':
+        print(i[2].attrib['text']  +str(len(analysis_xml(11)[5][1][1][0][13]))+"   "+str(int_flag))
+        if len(analysis_xml(11)[5][1][1][0][13]) == int_flag and i[2].attrib['text'][0] == '已':
             flag = False
             print('执行结束')
